@@ -1,0 +1,100 @@
+import pandas as pd
+df=pd.read_csv("/content/drive/MyDrive/Copy of Heart.csv")
+df.head()
+
+df=df[["Age","MaxHR","RestBP","Chol","Fbs","RestECG","Slope","Oldpeak","ExAng"]]
+x=df.iloc[:,:8].values
+y=df.iloc[:,8].values
+df.head()
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+from sklearn.preprocessing import StandardScaler
+sc=StandardScaler()
+x_train=sc.fit_transform(x_train)
+x_test=sc.transform(x_test)
+
+from sklearn.naive_bayes import GaussianNB
+gb=GaussianNB()
+gb.fit(x_train,y_train)
+y_pred=gb.predict(x_test)
+
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
+v1=accuracy_score(y_test,y_pred)
+v2=precision_score(y_test,y_pred,average="weighted")
+v3=recall_score(y_test,y_pred,average="weighted")
+v4=f1_score(y_test,y_pred,average="weighted")
+print('Accuracy:{}'.format(accuracy_score(y_test,y_pred)))
+print('Precision:{}'.format(precision_score(y_test,y_pred,average="weighted")))
+print('Recall:{}'.format(recall_score(y_test,y_pred,average="weighted")))
+print('f1:{}'.format(f1_score(y_test,y_pred,average="weighted")))
+
+
+from sklearn.decomposition import PCA
+pca = PCA(n_components = 2)
+X_train_pca = pca.fit_transform(x_train)
+X_test_pca = pca.transform(x_test)
+
+gnbpca = GaussianNB()
+gnbpca.fit(X_train_pca, y_train)
+y_pred_pca = gnbpca.predict(X_test_pca)
+
+
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
+s1=accuracy_score(y_test,y_pred_pca)
+s2=precision_score(y_test,y_pred_pca)
+s3=recall_score(y_test,y_pred_pca)
+s4=f1_score(y_test,y_pred_pca)
+print('Accuracy : {}'.format(accuracy_score(y_test,y_pred_pca)))
+print('precision : {}'.format(precision_score(y_test,y_pred_pca)))
+print('recall : {}'.format(recall_score(y_test,y_pred_pca)))
+print('f1-score : {}'.format(f1_score(y_test,y_pred_pca)))
+
+
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+l = LinearDiscriminantAnalysis()
+X_train_lda = l.fit_transform(x_train,y_train)
+X_test_lda = l.transform(x_test)
+
+gnblda = GaussianNB()
+gnblda.fit(X_train_lda, y_train)
+y_pred_lda = gnblda.predict(X_test_lda)
+
+
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
+s5=accuracy_score(y_test,y_pred_lda)
+s6=precision_score(y_test,y_pred_lda)
+s7=recall_score(y_test,y_pred_lda)
+s8=f1_score(y_test,y_pred_lda)
+print('Accuracy : {}'.format(accuracy_score(y_test,y_pred_lda)))
+print('precision : {}'.format(precision_score(y_test,y_pred_lda)))
+print('recall : {}'.format(recall_score(y_test,y_pred_lda)))
+print('f1-score : {}'.format(f1_score(y_test,y_pred_lda)))
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+  
+# create data
+x = ["A","P","R","F"]
+y = [s1,s2,s3,s4]
+y1=[s5,s6,s7,s8]
+y2=[v1,v2,v3,v4]
+# plot lines
+plt.plot(x, y, label = "LDA")
+plt.plot(x, y1, label = "PCA")
+plt.plot(x, y2, label = "Nor")
+#plt.plot(x, np.sin(x), label = "curve 1")
+#plt.plot(x, np.cos(x), label = "curve 2")
+plt.legend()
+#plt.show()
+#plt.plot(x, y)
