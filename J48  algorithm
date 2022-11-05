@@ -1,0 +1,43 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+
+
+bc = datasets.load_breast_cancer()
+X = bc.data[:, 2:]
+y = bc.target
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)
+clf = DecisionTreeClassifier(criterion='gini', max_depth=4, random_state=1)
+clf.fit(X_train, y_train)
+
+
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
+y1=y_train_predicted=clf.predict(X_train)
+y2=y_test_predicted=clf.predict(X_test)
+y3=accuracy_score(y_train,y_train_predicted)
+y4=accuracy_score(y_test,y_test_predicted)
+
+
+from sklearn import tree
+fig, ax = plt.subplots(figsize=(10, 10))
+tree.plot_tree(clf, fontsize=10)
+plt.show()
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)
+clf = DecisionTreeClassifier(criterion='entropy', max_depth=4, random_state=1)
+clf.fit(X_train, y_train)
+
+
+from sklearn import tree
+fig, ax = plt.subplots(figsize=(10, 10))
+tree.plot_tree(clf, fontsize=10)
+plt.show()
